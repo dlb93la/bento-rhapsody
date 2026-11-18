@@ -6,6 +6,8 @@
 
 Pack a lunchbox. Accidentally start a band.
 
+**Remix playtest:** choose the no-clock Cozy campaign, timed Rush, or persistent Free Jam. Orders now include rescue rehearsals, an argument to untangle, reserved tea seats and a finale that carries your arrangement forward. Earn optional encore tickets for every voice joining and happy players on golden stages. Press Space for a short featured solo. See `REMIX-PLAYTEST.md` for the design experiment and verification limits.
+
 Bento Rhapsody is an offline musical packing puzzle. Six food characters have six distinct synthesized voices. Friends touching along an edge unlock each other's voices; rival neighbors grumble and silence their happy singing.
 
 The lunchbox is a small jazz arrangement. Every packed food adds its own instrumental layer: upright bass, muted brass, electric piano, brush drums, nylon guitar or vibraphone. Friends unlock full instrumental energy and a sung entrance. Its leftmost column selects one of five entries within the swinging bar; its vertical position changes notes. An original eight-bar chord progression keeps the layers in harmony without restarting the music on every move.
@@ -14,7 +16,7 @@ Orders require happy duets and a minimum number of distinct singing entries, as 
 
 Serve six listeners before their trains leave. Each passenger joins their lunchbox's chorus. In the finale, **The Midnight Bites** perform all six arrangements you actually made, aboard a singing train. Three missed orders end the set.
 
-Controls: click or drag to pack; R/right-click to rotate; Z to undo; H for the guide; Escape to pause; Enter to serve. Click a placed food to move or remove it. Sound can be toggled instantly; faces, syllables and beat lights preserve all gameplay information when muted.
+Controls: click or drag to pack; R/right-click to rotate; Z to undo; Space to solo; H for the guide; Escape to cancel a selection or pause; Enter to serve. Click a placed food to move or remove it. Free Jam offers 76/96/120 BPM and saves your box locally. Sound can be toggled instantly; faces, syllables and beat lights preserve all gameplay information when muted.
 
 All UI, dialogue and instructions are in English. The paper-theater station is original AI-generated art; food illustrations and animation are original editable Canvas drawings. The stock food-character reference is not embedded. Audio is synthesized locally with Web Audio: no recordings, speech services, downloaded songs or network resources. The audio clock schedules ahead of rendering, with swing, layered instruments, vowel voices, filtered echo and bounded output gain.
 

@@ -2,7 +2,7 @@
 // Newly composed for Bento Rhapsody. Zoud informed the layered-band approach,
 // not this score or source. One audio-clock transport, changing arrangements.
 window.BentoChoir = (() => {
-  const BPM = 96, EIGHTH = 60 / BPM / 2, ENTRIES = [0, 2, 3, 5, 6];
+  let BPM = 96, EIGHTH = 60 / BPM / 2;const ENTRIES = [0, 2, 3, 5, 6];
   const voices = {
     rice: { syllable: 'PON', role: 'upright bass', base: 48, vowel: [430, 860, 2300], color: '#d8cda4' },
     salmon: { syllable: 'SHA', role: 'muted brass', base: 60, vowel: [700, 1180, 2500], color: '#cf8468' },
@@ -47,7 +47,8 @@ window.BentoChoir = (() => {
       if (!group.length) continue;
       const lead = group.find(p => p.singing) || group[0];
       const happy = group.some(p => p.singing), angry = group.every(p => p.grumpy);
-      const energy = angry ? .12 : happy ? 1 : .38;
+      const solo=pieces.some(p=>p.solo),featured=group.some(p=>p.solo);
+      const energy = (angry ? .12 : happy ? 1 : .38)*(solo?(featured?1.35:.28):1);
       const pan = (lead.x - 2) * .16, variation = (4 - lead.y) % 3;
       if (type === 'rice' && [0, 3, 4, 6].includes(step)) {
         const walk = [0, 7, 12, bar % 2 ? 10 : 5][[0, 3, 4, 6].indexOf(step)];
@@ -74,12 +75,14 @@ window.BentoChoir = (() => {
         const n=chord.notes[(step+variation+bar)%5]+12;
         add('vibes',type,n,.74,.055*energy,.018,pan);
       }
+      if(featured&&happy&&[1,3,5,7].includes(step))add(type==='salmon'?'brass':'vibes',type,chord.notes[(step+bar)%5]+(type==='rice'?0:12),.32,.065,0,pan);
+      if(happy&&group.some(p=>p.spotlit)&&step===7&&bar%2===1)add('vibes',type,chord.notes[4]+12,.44,.045,.08,pan);
       // The food's actual position controls its sung entry, not just the backing.
       const entrances=group.filter(p=>ENTRIES[p.x]===step&&(p.singing||p.grumpy));
       entrances.forEach(p=>{
         pulses.push({id:p.id,type,grumpy:!!p.grumpy});
         if(p.grumpy){if(bar%2===0)add('grumble',type,pitch(type,p.y,bar)-1,.16,.045,0,(p.x-2)*.18);}
-        else add('vocal',type,pitch(type,p.y,bar),type==='broccoli'?.14:.39,.085/Math.sqrt(entrances.length),.015,(p.x-2)*.18);
+        else add('vocal',type,pitch(type,p.y,bar),type==='broccoli'?.14:.39,.085/Math.sqrt(entrances.length)*(solo&&!featured?.3:1),.015,(p.x-2)*.18);
       });
     }
     if(isConcert&&step===0&&bar%2===0)add('whistle','tofu',harmony[bar%8].notes[4]+12,.78,.055,.04,.3);
@@ -191,5 +194,5 @@ window.BentoChoir = (() => {
   }
   function level(){if(!analyser||!enabled)return 0;analyser.getByteTimeDomainData(scope);let n=0;for(const x of scope)n+=((x-128)/128)**2;return Math.min(1,Math.sqrt(n/scope.length)*5);}
   function whistle(beat=0){if(context&&enabled)instrument({kind:'whistle',type:'tofu',midi:[81,79,76,74,72][beat%5],duration:.7,gain:.06,pan:.3},context.currentTime+.01);}
-  return {voices,pitch,unlock,setEnabled,hush,sing,sfx,whistle,level,setArrangement,setPlaying,reset,tick,score,entries:ENTRIES,bpm:BPM,onStep(fn){listener=fn;},get diagnostics(){return {playing,enabled,bar:Math.floor(index/8),step:index%8,sources:playingSources.size,trace:trace.slice()};}};
+  return {voices,pitch,unlock,setEnabled,hush,sing,sfx,whistle,level,setArrangement,setPlaying,reset,tick,score,entries:ENTRIES,get bpm(){return BPM;},setTempo(value){BPM=Math.max(60,Math.min(132,Number(value)||96));EIGHTH=60/BPM/2;},onStep(fn){listener=fn;},get diagnostics(){return {playing,enabled,bar:Math.floor(index/8),step:index%8,sources:playingSources.size,trace:trace.slice()};}};
 })();

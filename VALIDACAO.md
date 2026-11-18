@@ -2,6 +2,12 @@
 
 Updated on 18 November 2026, São Paulo time. No entry submitted.
 
+## Remix playtest
+
+Current working branch: `experiment/remix-playtest`. Solo design iteration adds six differentiated rehearsal starts, reserved tea seats, optional encore tickets and golden stages, Cozy/Rush choice, a persistent Free Jam, tempo control, real five-second featured solos, move reactions and anchored dragging. Full rationale and test results are in `REMIX-PLAYTEST.md`.
+
+Local checks passed for all six orders and all six three-ticket solutions, input-handler campaign simulation, sandbox save/restore, optional score rewards, solo/tempo synthesis and interaction regressions. The 33-second offline audio render remained free of clipping. Browser playtest and replacement screenshots remain pending; earlier screenshots and browser observations below describe earlier builds.
+
 ## Paper-theater and jazz revision — current status
 
 This revision takes its visual and layered-music direction from the user's Zoud prototype. New code implements an eight-bar jazz band, audio-clock lookahead scheduling, individual instrumental layers, sung entrances, continuous paper pieces, wood-and-green-lined box, new food illustrations and an original ImageGen station scene. Typography uses locally bundled OFL fonts.
