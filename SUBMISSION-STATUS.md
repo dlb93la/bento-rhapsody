@@ -2,7 +2,11 @@
 
 The current edition completed its six-order browser playtest with 18/18 encore tickets. Four fresh browser screenshots replace the earlier edition's captures; each is 1280×820 and below 256 KiB. The browser console reported no warnings or errors.
 
-The make.fun agent connection was approved. Entry `01a1ef99-ae5c-72be-8fb8-ee4efdb2cebc` was received on November 18 at 16:59:48 UTC (13:59:48 São Paulo), for commit `a0986d7c10b04983df4f8cddf196cc5cd054ad36`. The initial account, signature, repository, license, duplicate and security checks passed. The score is pending server evaluation.
+The make.fun agent connection was approved. Entry `01a1ef99-ae5c-72be-8fb8-ee4efdb2cebc` was received on November 18 at 16:59:48 UTC (13:59:48 São Paulo), for commit `a0986d7c10b04983df4f8cddf196cc5cd054ad36`. All required server validity checks passed, including the corrected transcript run record. The entry is ranked and prize-eligible according to the server.
+
+## Provisional development score
+
+The server reports a provisional judge win rate of **82.5595%**, with a 90% interval of **78.6503–86.4687%**. The recorded games comprise **8 wins, 1 draw and 3 losses** across 12 matches. This rate estimates strength against the four fixed house reference games; it is not a percentage of rubric approval. Final judging is separate, and this result does not guarantee a finalist place or prize.
 
 ## Intake correction
 
