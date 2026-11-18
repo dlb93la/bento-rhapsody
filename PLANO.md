@@ -1,6 +1,6 @@
 # make.fun — conceitos e plano de produção
 
-Preparado em 17/11/2026, horário de Brasília. Conceito ainda em escolha pelo usuário.
+Preparado em 17/11/2026, horário de Brasília. O usuário escolheu O Último Bentô; a primeira versão jogável está implementada. Resultados de verificação em VALIDACAO.md.
 
 Nossa prioridade é um jogo 2D completo, com uma interação central forte, decisões reais, progressão curta, conclusão e apresentação clara em quatro capturas. As estimativas abaixo são de planejamento e incluem um MVP completo com acabamento inicial. Reservar mais duas horas para testes finais, pacote e transcrições.
 

@@ -8,6 +8,6 @@ All illustration, animation, game logic and synthesized sound are original code.
 
 Open `game/index.html` directly in a desktop browser. For a local HTTP preview run `python -m http.server 4198 --bind 127.0.0.1 --directory game`.
 
-The official make.fun library is preserved under `vendor/`. `node main.ts` writes the submission to `/output`; set `MAKEFUN_OUTPUT_DIR` for local packaging. The four files under `screenshots/` must be real browser captures before packaging.
+The official make.fun library is preserved under `vendor/`. `node main.ts` writes the submission to `/output`; set `MAKEFUN_OUTPUT_DIR` for local packaging. The four files under `screenshots/` are real browser captures, checked against the competition's size and dimension limits.
 
-Submission and transcript checks are in progress. No competition entry has been sent.
+Local pre-submit checks passed, including the transcript gate. See `VALIDACAO.md` for results and submission limitations. No competition entry has been sent. License: MIT.
