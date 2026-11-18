@@ -38,6 +38,6 @@ The existing game had a coherent visual identity and musical system, but each or
 
 ## Verification limits
 
-These checks establish that the mechanics function and the puzzles have solutions. They do not establish that human players find the game fun. The browser integration remains unavailable in this chat, so there was no new browser playtest, subjective listening review or fresh competition screenshot capture. Source renders stay under `private/` and are not submission screenshots.
+These checks establish that the mechanics function and the puzzles have solutions. They do not establish that human players find the game fun. On November 18, browser access recovered: the current six-order campaign was completed using real clicks and keyboard inputs, including seed removal, rotation, solos, reserved tea seats and the carried final arrangement. The run earned 18/18 tickets and reached the singing train. No browser console errors or warnings were captured. All four competition screenshots were replaced with actual browser captures at 1280×820, each below 256 KiB. Source renders stay under `private/` and are not submission screenshots. This was not a subjective human listening review.
 
 For the next human playtest, assess whether the first duet is understandable, whether the rescue stages feel different, whether soloing is satisfying, and whether optional tickets encourage another arrangement rather than busywork.
