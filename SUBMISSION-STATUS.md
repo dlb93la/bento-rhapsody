@@ -17,3 +17,7 @@ The original parent log was located and attached as provenance. The run declarat
 The corrected package passed the level-20 local checks, including `transcripts_run_record`. Server intake, grading and eligibility are still determined by make.fun; no score is claimed by this document.
 
 Deadline: November 18 at 18:00 UTC / 15:00 São Paulo.
+
+## Second entry: live-performance edition
+
+Entry `01a1efc2-893b-760b-bf84-56617f7eef4b`, **Bento Rhapsody — Pack, Pair, Perform**, was received at 17:44:26 UTC / 14:44:26 São Paulo, for commit `1bc400d44d63ee664bc8d680286ec0421b0619d4`. It adds arrangement-driven A/S/D performances, perfect judgments, combos, retries and bounded bonuses, with fresh browser captures. Two builds produced 17 identical output files. The exact commit passed all applicable official local checks. Server evaluation is pending; the first entry's score must not be attributed to this version.
