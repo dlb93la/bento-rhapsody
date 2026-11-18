@@ -20,4 +20,10 @@ Deadline: November 18 at 18:00 UTC / 15:00 São Paulo.
 
 ## Second entry: live-performance edition
 
-Entry `01a1efc2-893b-760b-bf84-56617f7eef4b`, **Bento Rhapsody — Pack, Pair, Perform**, was received at 17:44:26 UTC / 14:44:26 São Paulo, for commit `1bc400d44d63ee664bc8d680286ec0421b0619d4`. It adds arrangement-driven A/S/D performances, perfect judgments, combos, retries and bounded bonuses, with fresh browser captures. Two builds produced 17 identical output files. The exact commit passed all applicable official local checks. Server evaluation is pending; the first entry's score must not be attributed to this version.
+Entry `01a1efc2-893b-760b-bf84-56617f7eef4b`, **Bento Rhapsody — Pack, Pair, Perform**, was received at 17:44:26 UTC / 14:44:26 São Paulo, for commit `1bc400d44d63ee664bc8d680286ec0421b0619d4`. It adds arrangement-driven A/S/D performances, perfect judgments, combos, retries and bounded bonuses, with fresh browser captures. Two builds produced 17 identical output files. All required server checks passed. Its provisional expected score was **81.6983%**, with 7 wins, 2 draws and 3 losses.
+
+## Third entry: modular structure and concert cover
+
+Entry `01a1efc8-b7d9-724e-857a-239bc27e7f92` was received at 17:51:11 UTC / 14:51:11 São Paulo, for commit `d1ca7fd68d756076865d4301b6e8b547d062805a`. Puzzle rules, input handling, passenger art and story/results were separated into dedicated files. The existing real concert capture became the first image. Regression tests and a fresh browser smoke test passed without captured console errors. The final build produced 21 identical files across two runs. All required server checks passed; the entry is ranked and prize-eligible.
+
+Its provisional expected score is **80.8295%**, with a 90% interval of **76.6481–85.0110%**, and 8 wins, 3 draws and 1 loss across 12 adaptive matches. The implemented changes did **not** improve the platform score: the original edition scored 82.5595%. The 94% target was not reached. Under Force_Last, this third entry is the latest submitted snapshot; final judging is separate. Individual match explanations were unavailable before the deadline, so no specific losing verdict is claimed as the cause.
