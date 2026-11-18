@@ -1,5 +1,7 @@
 # Bento Rhapsody
 
+Pack → pair → perform → serve: each completed arrangement becomes an eight-note call-and-response concert. Play A/S/D or tap the lane buttons, follow the food notes into the rings, build a combo and earn a precision bonus. Retry the performance before serving, or skip it for a relaxed puzzle session. Repacking the box resets its recorded performance. Six puzzle tracks become the final train concert, with your score and live-note total.
+
 [![make.fun bounty](https://make.fun/badge/best-game-01.svg)](https://make.fun/bounty/best-game-01)
 [![Rank](https://make.fun/badge/best-game-01/dlb93la/bento-rhapsody/rank.svg)](https://make.fun/bounty/best-game-01)
 [![Reward](https://make.fun/badge/best-game-01/dlb93la/bento-rhapsody/reward.svg)](https://make.fun/bounty/best-game-01)

@@ -50,7 +50,7 @@ function liveArrangement(e){
   const x=347,y=924,w=751,active=new Set(state.pieces.map(p=>p.type));rect(x,y,w,47,8,'#e8eddb','#cbd3b5');
   text('♫',367,y+23,23,palette.green,'center');text('Live arrangement',390,y+16,14,palette.ink,'left',700);
   text(state.solo?`${byFood[state.solo.type].nick} is taking a solo!`:`${active.size} layers · ${e.singers.size} singing · ${choir.bpm} BPM · ${music.chord}`,390,y+34,11,palette.muted);
-  button('SOLO · SPACE',747,y+8,153,28,spotlight,'light',state.pieces.length>0);
+  button(concert?.done?'RETRY A/S/D':'SOLO · SPACE',747,y+8,153,28,concert?.done?retryConcert:spotlight,'light',state.pieces.length>0);
   for(let i=0;i<20;i++){const h=4+music.meter*17*(.4+.6*Math.abs(Math.sin(elapsed*4+i*2)));rect(x+w-155+i*6.4,y+24-h/2,3,h,2,active.size?'#729a79':'#bcc4ae');}
 }
 function gameplay(){
@@ -61,7 +61,7 @@ function gameplay(){
   drawPantry();text('YOUR COMPOSITION',353,281,12,'#895e42','left',800);headline('The band\'s lunchbox',353,313,39);text(state.mode==='jam'?`${e.area} / 25 spaces`:`${e.area} / ${r.cells} packed`,1101,311,13,palette.muted,'right');
   beatStrip(board.x,328,495,e.beatSet,15);window.BentoArt.tray(ctx,board.x,board.y,board.cell);
   state.pieces.forEach(p=>drawPiece(p,e.moods[p.id]||0,state.active?.id===p.id?.7:1));
-  drawStageFeatures(e);
+  drawStageFeatures(e);drawPerformanceCard();
   if(!state.pieces.length&&!rehearsal().blocked.length){headline('Your first little song',722,577,35,'#e5d5ac','center');text('Choose a food and give it a place.',722,616,16,'#bbcab0','center');text('Friends bring out the voice.',722,646,14,'#a4b8a3','center');}
   if(music.beat>=0){ctx.fillStyle='#f0d29714';ctx.fillRect(board.x+music.beat*99,board.y,99,495);ctx.fillStyle='#e6bd70';ctx.fillRect(board.x+music.beat*99+7,board.y+491,85,2);}
   if(state.active&&pointer.x>board.x-12&&pointer.x<board.x+510&&pointer.y>board.y-12&&pointer.y<board.y+510){
@@ -84,7 +84,7 @@ function gameplay(){
   const grade=rating(e);text(`ENCORE TICKETS  ${'★'.repeat(grade.stars)}${'☆'.repeat(3-grade.stars)}`,1168,789,13,'#927244','left',750);text(`+1 every voice · +1 gold stages (${grade.lit}/${grade.spotGoal})`,1168,810,11,palette.muted);
   const fraction=state.timer/r.time;rect(1168,829,327,7,4,'#e8dec8');rect(1168,829,state.rush?Math.max(0,327*fraction):327,7,4,fraction<.25&&state.rush?palette.coral:'#729471');
   text(state.rush?`${Math.ceil(state.timer)}s to departure`:'Cozy set · take your time',1168,855,13,palette.muted);text(`COMBO ×${state.combo+1}`,1495,855,12,palette.coral,'right',750);
-  button(e.ready?'SERVE THE SONG  →':'BUILD YOUR CHORUS',1168,891,327,50,deliver,'coral',e.ready);text('A meal worth an encore.',1332,958,13,palette.muted,'center');
+  button(e.ready?(concert?.done?'SERVE THE SONG  →':'PLAY THE CHORUS  →'):'BUILD YOUR CHORUS',1168,891,327,50,performOrServe,'coral',e.ready);text(concert?.done?`${concert.medal} · +${concert.bonus} pts`:'PACK → PAIR → PLAY A/S/D → SERVE',1332,958,12,palette.muted,'center');
   text('CLICK / DRAG TO PACK   ·   R ROTATE   ·   Z UNDO   ·   SPACE SOLO   ·   H GUIDE   ·   ESC PAUSE',780,992,11,palette.muted,'center');
 }
 function removeSelected(){if(state.active?.id){remember();const p=state.pieces.find(p=>p.id===state.active.id);state.pieces=state.pieces.filter(q=>q.id!==p.id);state.stock[p.type]++;state.active=null;saveJam();}}
@@ -103,10 +103,10 @@ function titleScreen(){
   stationBackdrop(0,0,W,H);
   text('♫',132,171,38,'#edcd89','center');text('A LITTLE MIDNIGHT MUSIC',165,171,15,'#e9d1a2','left',700);
   headline('Bento',101,292,142,'#fff1d1');headline('Rhapsody',100,416,142,'#ecc57c','left',true);
-  wrap('Pack food friends. Find their groove. Put a very small band on the last train.',110,536,435,26,'#f9ebce',38);
+  wrap('Pack a puzzle. Conduct the chorus. Six passengers. One last-train concert.',110,536,435,26,'#f9ebce',38);
   button('START THE SESSION  →',110,688,330,61,startGame,'coral');button('HOW TO JAM',460,688,194,61,toggleHelp,'light');
   button('FREE JAM  ♫',110,769,234,43,startJam,'light');button(state.rush?'RUSH · WITH A CLOCK':'COZY · NO CLOCK',362,769,292,43,()=>{state.rush=!state.rush;},'light');
-  text('♫ Best with sound. Lovely without it.',111,843,17,'#e9d7b7');
+  text('6 puzzle tracks · 48 live notes · Cozy / Rush / Free Jam',111,843,17,'#e9d7b7');
   rect(102,890,580,67,10,'#0e2d33c9','#66715a');
   foods.forEach((f,i)=>ingredient(f.id,147+i*95,923,71,1,i,true,Math.max(0,Math.sin(elapsed*2-i))*.6));
   text('THE MIDNIGHT BITES / DEBUT SESSION',1510,962,12,'#ffe6b7','right',700);

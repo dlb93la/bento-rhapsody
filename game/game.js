@@ -62,6 +62,7 @@ function musicStep(plan){
 }
 choir.onStep(musicStep);
 function updateMusic(dt){
+  updateConcert(dt);
   if(!state.paused&&!state.help){if(state.solo){state.solo.life-=dt;if(state.solo.life<=0)state.solo=null;}if(state.reaction){state.reaction.life-=dt;if(state.reaction.life<=0)state.reaction=null;}}
   for(const [id,p]of Object.entries(music.pulses)){p.life-=dt*3;if(p.life<=0)delete music.pulses[id];}
   music.customer=Math.max(0,music.customer-dt*3);
@@ -96,16 +97,16 @@ function evaluate(pieces=state.pieces){
 }
 function burst(x,y,color,n=12){for(let i=0;i<n;i++)particles.push({x,y,vx:Math.cos(i/n*Math.PI*2)*70,vy:Math.sin(i/n*Math.PI*2)*70-35,life:1,color,born:performance.now()});}
 function notify(msg,good=true){toast={text:msg,life:3,good};tone(good?660:170,.14);}
-function remember(){state.history.push(JSON.stringify({pieces:state.pieces,stock:state.stock}));if(state.history.length>35)state.history.shift();}
-function undo(){const prev=state.history.pop();if(prev){Object.assign(state,JSON.parse(prev));state.active=null;saveJam();tone(330);}}
-function startLevel(){const carried=state.mode==='story'&&state.level===5?state.pieces.map(p=>({...p})):[];state.pieces=[];state.stock=Object.fromEntries(foods.map(f=>[f.id,rehearsal().menu.includes(f.id)?3:0]));state.active=null;state.rotation=0;state.history=[];state.solo=null;state.reaction=null;state.timer=recipes[state.level].time;state.screen='play';state.paused=false;state.help=false;resetMusic();if(state.mode==='story'){if(carried.length)for(const p of carried)seedPiece(p.type,p.x,p.y,p.rot);else for(const [type,x,y,rot]of rehearsals[state.level].seed)seedPiece(type,x,y,rot);}}
+function remember(){if(concert?.done)concert=null;state.history.push(JSON.stringify({pieces:state.pieces,stock:state.stock}));if(state.history.length>35)state.history.shift();}
+function undo(){const prev=state.history.pop();if(prev){concert=null;Object.assign(state,JSON.parse(prev));state.active=null;saveJam();tone(330);}}
+function startLevel(){concert=null;const carried=state.mode==='story'&&state.level===5?state.pieces.map(p=>({...p})):[];state.pieces=[];state.stock=Object.fromEntries(foods.map(f=>[f.id,rehearsal().menu.includes(f.id)?3:0]));state.active=null;state.rotation=0;state.history=[];state.solo=null;state.reaction=null;state.timer=recipes[state.level].time;state.screen='play';state.paused=false;state.help=false;resetMusic();if(state.mode==='story'){if(carried.length)for(const p of carried)seedPiece(p.type,p.x,p.y,p.rot);else for(const [type,x,y,rot]of rehearsals[state.level].seed)seedPiece(type,x,y,rot);}}
 function startGame(){state.mode='story';state.tempo=96;choir.setTempo(96);state.level=0;state.score=0;state.lives=3;state.combo=0;state.results=[];state.nextId=1;startLevel();}
 function deliver(){
   if(state.screen!=='play'||state.paused||state.help||state.mode==='jam')return;
   const e=evaluate();if(!e.ready){notify('Check the order, the rival voices and the singing beats.',false);return;}
-  const grade=rating(e),earned=500+e.area*20+e.bonds*110+e.rhythm*100+(state.rush?Math.floor(state.timer)*2:0)+state.combo*100+(grade.stars-1)*250;
+  const grade=rating(e),earned=(concert?.done?concert.bonus:0)+500+e.area*20+e.bonds*110+e.rhythm*100+(state.rush?Math.floor(state.timer)*2:0)+state.combo*100+(grade.stars-1)*250;
   const pattern=currentArrangement().map(p=>({...p,grumpy:false,solo:false}));
-  state.score+=earned;state.combo++;state.results.push({name:recipes[state.level].name,earned,stars:grade.stars,bonds:e.bonds,area:e.area,rhythm:e.rhythm,pattern});state.active=null;state.screen=state.level===5?'encore':'served';music.encore=0;resetMusic();choir.sfx('serve');burst(770,470,'#edb14b',35);
+  state.score+=earned;state.combo++;state.results.push({name:recipes[state.level].name,earned,performance:concert?.done?{hits:concert.hits,perfect:concert.perfect,bonus:concert.bonus,medal:concert.medal}:null,stars:grade.stars,bonds:e.bonds,area:e.area,rhythm:e.rhythm,pattern});state.active=null;state.screen=state.level===5?'encore':'served';music.encore=0;resetMusic();choir.sfx('serve');burst(770,470,'#edb14b',35);
   if(state.score>best){best=state.score;try{localStorage.setItem('bento-rhapsody-best',best);}catch{}}
 }
 function timeout(){state.lives--;state.combo=0;state.active=null;state.screen=state.lives<=0?'gameover':'missed';choir.hush();tone(150,.35);}
@@ -141,7 +142,7 @@ function resultOverlay(){
     foods.forEach((f,i)=>{const pulse=Math.max(0,...Object.values(music.pulses).filter(p=>p.type===f.id).map(p=>p.life));ingredient(f.id,555+i*90,375,75,1,i,true,pulse);});
     text('♪',605,475,42,palette.coral,'center');ctx.save();ctx.translate(780,462);ctx.scale(.56,.56);customer(0,0,r.mood);ctx.restore();text('♫',950,475,42,palette.green,'center');
     text(`${r.customer} joins your chorus.`,780,546,20,palette.green,'center',800);wrap(`“${r.memory}”`,486,589,600,21,palette.ink,26);
-    const last=state.results.at(-1);text(`${'★'.repeat(last.stars||1)}${'☆'.repeat(3-(last.stars||1))}   +${last.earned.toLocaleString('en-US')} points`,780,653,21,'#987037','center',700);
+    const last=state.results.at(-1);if(last.performance)text(`${last.performance.medal} · ${last.performance.hits}/8 notes · ${last.performance.perfect} perfect`,780,682,13,palette.green,'center',700);text(`${'★'.repeat(last.stars||1)}${'☆'.repeat(3-(last.stars||1))}   +${last.earned.toLocaleString('en-US')} points`,780,653,21,'#987037','center',700);
     button('NEXT LISTENER  →',550,702,460,57,()=>{state.level++;startLevel();},'coral');
   }else{ingredient('rice',780,405,145,-1,0);text(state.lives>0?'Departure came before the chorus was ready.':'Three missed orders. The kitchen needs a rest.',780,543,21,palette.muted,'center');text(`Your set: ${state.score.toLocaleString('en-US')} points`,780,600,28,palette.ink,'center',800);button(state.lives>0?'TRY THIS TRACK AGAIN':'START A NEW SET',550,702,460,57,()=>state.lives>0?startLevel():startGame(),'coral');}
   button('Back to the title',630,787,300,38,()=>{state.screen='title';choir.hush();},'light');
@@ -171,7 +172,7 @@ function encoreScreen(){
   face(engine+93,555,138,1,7,music.customer);text('♪',engine+155,370-Math.sin(elapsed*4)*10,43,palette.coral,'center');
   for(let i=0;i<8;i++)text(i%2?'♫':'♪',95+i*180,390-Math.sin(elapsed*2+i)*25,24,'#b29564','center');
   ctx.restore();ctx.fillStyle='#82948b';ctx.fillRect(0,713,W,5);ctx.fillRect(0,730,W,3);
-  text('Every lunchbox found its voice. Every passenger joined in.',780,779,23,palette.ink,'center',700);
+  text(`TOUR COMPLETE · ${state.score.toLocaleString('en-US')} POINTS · ${state.results.reduce((n,r)=>n+(r.performance?.hits||0),0)} / 48 LIVE NOTES`,780,779,23,palette.ink,'center',700);
   beatStrip(553,822,454,new Set([0,1,2,3,4]),29);
   button('PLAY ANOTHER SET',396,890,355,57,startGame,'coral');button('REPLAY THE ENCORE',782,890,355,57,()=>{music.encore=0;resetMusic();},'light');
   text(`6 / 6 songs delivered  ·  ${state.results.reduce((n,r)=>n+(r.stars||1),0)} / 18 encore tickets  ·  Your own arrangements are playing`,780,980,16,palette.muted,'center');
@@ -181,24 +182,25 @@ function guideOverlay(){
   headline('How to conduct your lunch',780,269,48,palette.ink,'center');text('A puzzle you can hear. A song you can rearrange.',780,317,21,palette.muted,'center');
   const rows=[['1  PACK','Choose from the left. Click or drag into the box. R rotates, Z undoes, Delete removes. Cozy has no clock; Rush does. Free Jam saves your own song.'],['2  PAIR','Edges count, corners do not. Friends unlock singing; rivals grumble. Clear the set list to serve. Get every food type singing for a bonus ticket.'],['3  PLAY','Happy players on golden stages earn another ticket. Move up or down for new notes. Press Space to take a solo. Free Jam also lets you change the tempo.']];
   rows.forEach(([title,body],i)=>{const y=386+i*132;rect(365,y-25,830,116,16,i%2?'#f1e7cf':'#f8edd5');text(title,390,y+7,19,palette.coral,'left',800);wrap(body,590,y-2,570,20,palette.ink,27);});
-  text('Match the set list, then SERVE THE SONG. Your six songs become the train\'s final concert.',780,810,17,palette.green,'center',700);
+  text('Match the set list, then PLAY THE CHORUS with A/S/D. Your six songs become the train\'s final concert.',780,810,17,palette.green,'center',700);
   text('Sound is optional. Mouths, syllables and beat lights show the whole score.',780,844,18,palette.muted,'center');
   button('LET\'S JAM  →',580,878,400,38,toggleHelp,'coral');
 }
 function render(){
-  const status=evaluate();canvas.setAttribute('aria-label',`Bento Rhapsody. ${state.mode}. ${state.help?'guide':state.paused?'paused':state.screen}. Order ${state.level+1} of 6. ${status.area} spaces, ${status.bonds} happy duets, ${status.conflicts} rivals, ${status.rhythm} of ${recipes[state.level].beats} singing beats. ${status.ready?'Ready to serve.':''} ${state.sound?'Sound on.':'Sound off.'}`);
+  const status=evaluate();canvas.setAttribute('aria-label',`Bento Rhapsody. ${state.mode}. ${state.help?'guide':state.paused?'paused':state.screen}. Order ${state.level+1} of 6. ${status.area} spaces, ${status.bonds} happy duets, ${status.conflicts} rivals, ${status.rhythm} of ${recipes[state.level].beats} singing beats. ${status.ready?'Ready to serve.':''} ${concert?.active?'Live performance: A/S/D, '+concert.hits+' of 8 notes.':concert?.done?'Performance complete: '+concert.hits+' of 8 notes.':''} ${state.sound?'Sound on.':'Sound off.'}`);
   buttons=[];background();if(state.screen==='title')titleScreen();else if(state.screen==='encore')encoreScreen();else{gameplay();if(['served','missed','gameover'].includes(state.screen))resultOverlay();}
   for(const p of particles){const age=(performance.now()-p.born)/1000;if(age>.8)continue;ctx.globalAlpha=1-age/.8;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,4,0,7);ctx.fill();}ctx.globalAlpha=1;
   if(toast){rect(440,184,680,48,14,toast.good?'#dce9d5':'#f4d0bb');text(toast.text,780,208,18,palette.ink,'center',700);}
   if(state.paused){buttons=[];ctx.fillStyle='#233d40ee';ctx.fillRect(0,173,W,827);rect(500,370,560,260,25,palette.paper);text('A little intermission.',780,433,34,palette.ink,'center',800);button('BACK TO THE JAM',620,500,320,58,()=>setPause(false),'coral');}
   if(state.help)guideOverlay();
+  if(concert?.active&&!state.paused&&!state.help)drawConcert();
 }
 function pos(event){const r=canvas.getBoundingClientRect();return{x:(event.clientX-r.left)*W/r.width,y:(event.clientY-r.top)*H/r.height};}
 canvas.addEventListener('pointerdown',event=>{
   if(event.button===2)return;
   const downPosition=pos(event);pointer={...downPosition,down:true,startX:downPosition.x,startY:downPosition.y};canvas.focus();choir.unlock();canvas.setPointerCapture?.(event.pointerId);
   for(const b of [...buttons].reverse()){if(b.enabled&&pointer.x>=b.x&&pointer.x<=b.x+b.w&&pointer.y>=b.y&&pointer.y<=b.y+b.h){b.action();render();return;}}
-  if(state.screen!=='play'||state.paused||state.help)return;
+  if(state.screen!=='play'||state.paused||state.help||concert?.active)return;
   for(let i=0;i<foods.length;i++){const y=rack.y+i*(rack.h+rack.gap);if(pointer.x>=rack.x&&pointer.x<rack.x+rack.w&&pointer.y>=y&&pointer.y<=y+rack.h){const f=foods[i];if(state.stock[f.id]>0){state.active={type:f.id};state.rotation=0;choir.sing(f.id,choir.pitch(f.id,2),{volume:.16});}render();return;}}
   const x=Math.floor((pointer.x-board.x)/board.cell),y=Math.floor((pointer.y-board.y)/board.cell);
   if(x>=0&&x<5&&y>=0&&y<5){const p=evaluate().grid[y][x];if(state.active){place(x-(state.active.grabX||0),y-(state.active.grabY||0));}else if(p){state.active={type:p.type,id:p.id,grabX:x-p.x,grabY:y-p.y};state.rotation=p.rot;tone(380);}}
@@ -211,12 +213,13 @@ function place(x,y){const a=state.active;if(!a||!valid(a.type,x,y,state.rotation
   render();
 }
 canvas.addEventListener('pointermove',event=>{Object.assign(pointer,pos(event));});
-canvas.addEventListener('pointerup',event=>{const p=pos(event);const moved=Math.hypot(p.x-pointer.startX,p.y-pointer.startY)>8;if(state.screen==='play'&&!state.paused&&!state.help&&state.active&&pointer.down&&moved){const x=Math.floor((p.x-board.x)/board.cell)-(state.active.grabX||0),y=Math.floor((p.y-board.y)/board.cell)-(state.active.grabY||0);if(x>=0&&x<5&&y>=0&&y<5)place(x,y);}pointer.down=false;});
+canvas.addEventListener('pointerup',event=>{const p=pos(event);const moved=Math.hypot(p.x-pointer.startX,p.y-pointer.startY)>8;if(state.screen==='play'&&!concert?.active&&!state.paused&&!state.help&&state.active&&pointer.down&&moved){const x=Math.floor((p.x-board.x)/board.cell)-(state.active.grabX||0),y=Math.floor((p.y-board.y)/board.cell)-(state.active.grabY||0);if(x>=0&&x<5&&y>=0&&y<5)place(x,y);}pointer.down=false;});
 canvas.addEventListener('pointercancel',()=>{pointer.down=false;});
 canvas.addEventListener('contextmenu',event=>{event.preventDefault();if(state.active&&!state.help&&!state.paused)state.rotation=(state.rotation+1)%4;});
 window.addEventListener('keydown',event=>{
   if(['r','R','z','Z','h','H','Escape','Enter','Delete','Backspace',' '].includes(event.key))event.preventDefault();
   if(event.repeat)return;choir.unlock();
+  if(concert?.active){event.preventDefault();if(event.key==='Escape'){setPause(!state.paused);}else concertHit(event.key);render();return;}
   if(event.key.toLowerCase()==='h'){toggleHelp();render();return;}
   if(event.key==='Escape'){if(state.help)toggleHelp();else if(state.active)state.active=null;else if(state.screen==='play')setPause(!state.paused);render();return;}
   if(state.help)return;
@@ -224,12 +227,12 @@ window.addEventListener('keydown',event=>{
   if(state.screen!=='play'||state.paused)return;
   if(event.key===' '){spotlight();render();return;}
   if(event.key.toLowerCase()==='r'&&state.active){state.rotation=(state.rotation+1)%4;state.active.grabX=0;state.active.grabY=0;tone(420);}
-  if(event.key.toLowerCase()==='z')undo();if(event.key==='Enter')deliver();if(event.key==='Delete'||event.key==='Backspace')removeSelected();
+  if(event.key.toLowerCase()==='z')undo();if(event.key==='Enter')performOrServe();if(event.key==='Delete'||event.key==='Backspace')removeSelected();
   render();
 });
 let last=performance.now();
 function frame(now){const dt=Math.min((now-last)/1000,.05);last=now;elapsed+=dt;
-  if(state.screen==='play'&&state.mode==='story'&&state.rush&&!state.paused&&!state.help){state.timer-=dt;if(state.timer<=0){state.timer=0;timeout();}}
+  if(state.screen==='play'&&!concert?.active&&state.mode==='story'&&state.rush&&!state.paused&&!state.help){state.timer-=dt;if(state.timer<=0){state.timer=0;timeout();}}
   particles.forEach(p=>{p.life-=dt*1.3;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=50*dt;});particles=particles.filter(p=>p.life>0);if(toast){toast.life-=dt;if(toast.life<0)toast=null;}
   render();requestAnimationFrame(frame);
 }
