@@ -1,6 +1,24 @@
-# O Último Bentô — validação da primeira versão
+# Bento Rhapsody — musical edition validation
 
-Conferido em 17/11/2026, horário de Brasília. Projeto local, ainda sem inscrição enviada.
+Updated on 18 November 2026, São Paulo time. No entry submitted.
+
+## Musical edition — current validation
+
+The whole game is now in English. Six procedural food voices form a five-step sequencer: leftmost column sets entry beat, vertical position sets pitch, friends unlock singing and rivals grumble. Orders require distinct singing beats, so packing and friendship alone are insufficient. Passengers join the delivered song; The Midnight Bites perform the six saved arrangements on the singing train.
+
+- Completed all six current orders in the browser using real clicks and keys, including rotations, finale and restart.
+- Verified that a friendly Rice/Salmon pair on the same beat cannot be served; moving one to another beat enables serving.
+- Verified a deliberate rival placement, unhappy faces and GRR cue; undo restored the valid last order. Pause and guide block delivery. Muted play remains fully solvable.
+- Browser AudioContext was running. Analyzer sampling detected nonzero audio, all six food voice types and all five beat steps. This verifies signal generation, not a subjective listening review.
+- A 14-second encore audit observed all six recorded arrangements and nonzero audio. No console errors or warnings were captured.
+- Syntax and regression checks passed: six solutions, rhythm gate, pitch, mixed rival/friend behavior, stored encore, pause/guide and duplicate delivery.
+- Two builds produced eight identical files by SHA-256: three game files, four screenshots and dossier.json. Official vendor library unchanged. Game source: 41,533 bytes, no external resources.
+- Four new 1280×820 JPEGs: 120,750; 83,980; 121,311; 112,557 bytes. All meet screenshot limits.
+- Official check exited 0: 13 passed, six skipped/reserved, five checked at submission. Three native sessions recognized. Authored: 472/483 counted lines (97.7%); unwritten text: 7/479 (1.4%).
+
+The transcript privacy limitation and remaining submission steps below still apply. This edition uses MIT; artwork, voices and music are original code with no stock image or pre-existing song embedded.
+
+## Earlier validation record
 
 ## Jogo
 
