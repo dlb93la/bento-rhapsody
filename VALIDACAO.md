@@ -2,7 +2,19 @@
 
 Updated on 18 November 2026, São Paulo time. No entry submitted.
 
-## Musical edition — current validation
+## Paper-theater and jazz revision — current status
+
+This revision takes its visual and layered-music direction from the user's Zoud prototype. New code implements an eight-bar jazz band, audio-clock lookahead scheduling, individual instrumental layers, sung entrances, continuous paper pieces, wood-and-green-lined box, new food illustrations and an original ImageGen station scene. Typography uses locally bundled OFL fonts.
+
+Passed: JavaScript syntax; six musical puzzle solutions; rhythm, rivalry and pitch regressions; simulated input handlers for the new rack/board, drag, selection, rotation, remove, undo, pause, guide and all six deliveries; offline synthesis of 33 seconds with no clipped samples, seven chord identities and no remaining sources; source artwork renders; two byte-identical output builds (15 files, 2,577,864 game bytes).
+
+**Browser validation and screenshots are pending for this revision.** The in-app browser was unavailable, and Windows Computer Use stopped because it could not confidently identify the current URL. No further browser control was attempted. Existing submission images still show the earlier edition. Development renders are deliberately separate and must not be used as purported browser captures. Refresh all four real browser screenshots and complete a browser listening/playtest before sending this revision.
+
+The earlier checks below are historical results, not claims that the new art has already been browser-tested. The transcript privacy limitation remains applicable. Asset provenance is in ART-AND-MUSIC.md.
+
+The official local check for this revision exited 0: 13 passed, six skipped/reserved and five server-side submission checks. Recognized authorship: 704/864 counted lines (81.4%); unwritten text: 153/857 (17.8%), both within the required thresholds. This result does not certify the old screenshots as current or resolve the transcript privacy limitation.
+
+## Earlier musical edition — historical validation
 
 The whole game is now in English. Six procedural food voices form a five-step sequencer: leftmost column sets entry beat, vertical position sets pitch, friends unlock singing and rivals grumble. Orders require distinct singing beats, so packing and friendship alone are insufficient. Passengers join the delivered song; The Midnight Bites perform the six saved arrangements on the singing train.
 

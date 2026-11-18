@@ -1,6 +1,7 @@
 tools/
 out/
 out-check/
+out-*/
 private/
 node_modules/
 *.tar.gz
